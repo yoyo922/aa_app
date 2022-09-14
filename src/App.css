@@ -11,19 +11,40 @@ input[type="reset"] {
   outline: inherit;
 }
 .App {
+  margin-top: 100px;
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 .App .city-header {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 400px;
 }
 .App .city-header button {
-  margin-right: 40px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 25px;
 }
 .selected {
   font-weight: 600;
   color: lightblue;
+}
+.weatherComponent {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+.weatherComponent .today-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.weatherComponent .today-container .today-information {
+  display: flex;
+  align-items: center;
 }
 /*# sourceMappingURL=App.css.map */

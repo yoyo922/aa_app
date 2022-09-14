@@ -1,3 +1,5 @@
+// Styles for base app container
+
 /* Remove default button styles */ 
 button, input[type="submit"], input[type="reset"] {
 	background: none;
@@ -10,14 +12,20 @@ button, input[type="submit"], input[type="reset"] {
 }
 
 .App {
+  margin-top: 100px;
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
   .city-header {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 400px;
     button {
-      margin-right: 40px;
+      font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      font-size: 25px;
     }
   }
 }
@@ -25,4 +33,22 @@ button, input[type="submit"], input[type="reset"] {
 .selected {
   font-weight: 600;
   color: lightblue;
+}
+
+//Styles for Weather component
+
+.weatherComponent {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  .today-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .today-information {
+      display: flex;
+      align-items: center;
+    }
+  }
 }
