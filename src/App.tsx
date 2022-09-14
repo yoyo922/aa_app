@@ -71,8 +71,24 @@ class App extends React.Component<{}, myState> {
 
   getFiveDaysWeather = (weatherData: Array<any>): Array<any> => {
     let fiveDaysWeather: any = [];
+    let weatherTemp: number = 0;
+    let weatherTempCount = 0;
     for (let i = 0; i < weatherData.length; i = i + forecastDayInterval) {
-      fiveDaysWeather.push(weatherData[i]);
+      for (let k = i; k < i + forecastDayInterval; k++) {
+        console.log('adding weather', weatherData[k].main.temp, weatherTemp);
+
+        weatherTemp = weatherTemp + weatherData[k].main.temp;
+        weatherTempCount++;
+      }
+
+      weatherTemp = Math.round(weatherTemp / weatherTempCount);
+      fiveDaysWeather.push({
+        day: weatherData[i].dt,
+        temp: weatherTemp,
+        weather: weatherData[i].weather[0]
+      });
+      weatherTempCount = 0;
+      weatherTemp = 0;
     }
     return fiveDaysWeather;
   };
@@ -107,7 +123,7 @@ class App extends React.Component<{}, myState> {
               name={currentCity}
               onClick={this.setCity}
             >
-              {city}
+              {currentCity}
             </button>
           ))}
         </div>

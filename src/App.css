@@ -13,6 +13,7 @@ input[type="reset"] {
 .App {
   margin-top: 100px;
   width: 100%;
+  max-width: 500px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,6 +37,7 @@ input[type="reset"] {
   display: flex;
   flex-direction: column;
   align-content: center;
+  width: 100%;
 }
 .weatherComponent .today-container {
   width: 100%;
@@ -45,6 +47,16 @@ input[type="reset"] {
 }
 .weatherComponent .today-container .today-information {
   display: flex;
+  align-items: center;
+}
+.weatherComponent .week-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.weatherComponent .week-container .weekday-information {
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 /*# sourceMappingURL=App.css.map */
