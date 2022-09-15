@@ -6,11 +6,12 @@ import WeatherDisplay from "./WeatherComponent/WeatherDisplay";
 interface myState {
   city: string;
   weatherData: any;
+  todayWeather: any
 }
 
 const cities = ["Ottawa", "Moscow", "Tokyo"];
+//API key for openewather API
 const api_key = "ceaabd1441aec5eb12417e86fc7f7b4f";
-const forecastDayInterval = 8;
 
 interface latLng {
   lat: string;
@@ -44,6 +45,7 @@ class App extends React.Component<{}, myState> {
     this.state = {
       city: "Ottawa",
       weatherData: null,
+      todayWeather: null,
     };
   }
 
@@ -52,6 +54,12 @@ class App extends React.Component<{}, myState> {
     this.getApiData(city);
   }
 
+  /**
+   * function to call openweather API to retrieve information about a the city,
+   * it will call two end-points, one for a 5 days forecast starting tomorrow,
+   * and one for weather data for today, will store information in component state
+   * @param city - string of the city to get weather information for
+   */
   getApiData = (city: String) => {
     axios
       .get(
@@ -62,34 +70,76 @@ class App extends React.Component<{}, myState> {
         }&units=metric&appid=${api_key}`
       )
       .then((res) => {
-        let fiveDaysWeather = this.getFiveDaysWeather(res.data.list);
+        let fiveDaysWeather = this.getFourDaysWeather(res.data.list);
         this.setState({
           weatherData: fiveDaysWeather,
         });
       });
+
+      axios
+      .get(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${
+          cityLocations[city as keyof locations].lat
+        }&lon=${
+          cityLocations[city as keyof locations].lng
+        }&units=metric&appid=${api_key}`
+      )
+      .then((res) => {
+        this.setState({
+          todayWeather: res,
+        });
+      });
   };
 
-  getFiveDaysWeather = (weatherData: Array<any>): Array<any> => {
+  /**
+   * Function to parse information needed from openweather API response
+   * it will retrieve temperature, weather, icon and day as needed information
+   * for the child component 
+   * @param weatherData - api response from openweather api
+   * @returns - the needed information
+   */
+  getFourDaysWeather = (weatherData: Array<any>): Array<any> => {
+
     let fiveDaysWeather: any = [];
     let weatherTemp: number = 0;
     let weatherTempCount = 0;
-    for (let i = 0; i < weatherData.length; i = i + forecastDayInterval) {
-      for (let k = i; k < i + forecastDayInterval; k++) {
-        console.log('adding weather', weatherData[k].main.temp, weatherTemp);
+    let weatherType: string = weatherData[0].weather[0].main;
+    let weatherIcon: string = weatherData[0].weather[0].icon;
+    let timeString: string = weatherData[0].dt_txt.split(" ")[1]
+    let dayString: string = weatherData[0].dt_txt.split(" ")[0]
 
-        weatherTemp = weatherTemp + weatherData[k].main.temp;
-        weatherTempCount++;
+    weatherData.forEach((element, index) => {
+      if(dayString !== element.dt_txt.split(" ")[0] || index === weatherData.length) {
+        console.log(element)
+        fiveDaysWeather.push({
+          day: element.dt,
+          temp: Math.round(weatherTemp / weatherTempCount),
+          weather: weatherType,
+          icon: weatherIcon
+        });
+
+        weatherType = "";
+        weatherIcon = "";
+        weatherTemp = 0;
+        weatherTempCount = 0;
       }
 
-      weatherTemp = Math.round(weatherTemp / weatherTempCount);
-      fiveDaysWeather.push({
-        day: weatherData[i].dt,
-        temp: weatherTemp,
-        weather: weatherData[i].weather[0]
-      });
-      weatherTempCount = 0;
-      weatherTemp = 0;
-    }
+      dayString = element.dt_txt.split(" ")[0];
+      timeString = element.dt_txt.split(" ")[1];
+
+      if(timeString === '12:00:00') {
+        weatherType = element.weather[0].main;
+        weatherIcon = element.weather[0].icon;
+        console.log(weatherType);
+      }
+
+      weatherTemp = weatherTemp + element.main.temp;
+      weatherTempCount = weatherTempCount + 1;
+
+    });
+
+    fiveDaysWeather.pop();
+    
     return fiveDaysWeather;
   };
 
@@ -111,7 +161,7 @@ class App extends React.Component<{}, myState> {
   };
 
   render() {
-    const { city, weatherData } = this.state;
+    const { city, weatherData, todayWeather } = this.state;
 
     return (
       <div className="App">
@@ -127,7 +177,7 @@ class App extends React.Component<{}, myState> {
             </button>
           ))}
         </div>
-        <WeatherDisplay city={city} data={weatherData}></WeatherDisplay>
+        <WeatherDisplay city={city} fourDaysData={weatherData} todayData={todayWeather}></WeatherDisplay>
       </div>
     );
   }

@@ -10,12 +10,15 @@ input[type="reset"] {
   cursor: pointer;
   outline: inherit;
 }
+body {
+  margin: 0;
+}
 .App {
-  margin-top: 100px;
+  padding-top: 100px;
+  height: 100vh;
   width: 100%;
-  max-width: 500px;
   display: flex;
-  justify-content: center;
+  background-color: #F0FAFD;
   align-items: center;
   flex-direction: column;
 }
@@ -26,28 +29,51 @@ input[type="reset"] {
   max-width: 400px;
 }
 .App .city-header button {
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-size: 25px;
+  font-family: "Quicksand";
+  font-size: 20px;
 }
 .selected {
   font-weight: 600;
-  color: lightblue;
+  color: #15C1F7;
 }
 .weatherComponent {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-content: center;
   width: 100%;
+  max-width: 600px;
+  border-radius: 5px;
+  border: 3px solid white;
+  margin-top: 20px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  font-family: "Quicksand";
 }
 .weatherComponent .today-container {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 20px;
+}
+.weatherComponent .today-container h3 {
+  font-size: 18px;
+  font-weight: 400;
 }
 .weatherComponent .today-container .today-information {
   display: flex;
   align-items: center;
+}
+.weatherComponent .today-container .today-information img {
+  width: 75px;
+}
+.weatherComponent .today-container .today-information .today-temp-value {
+  font-size: 35px;
+  font-weight: 800;
+  margin: 0;
+}
+.weatherComponent .today-container .today-information .today-weather-string {
+  margin: 0;
 }
 .weatherComponent .week-container {
   display: flex;
@@ -58,5 +84,12 @@ input[type="reset"] {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 50px;
+  flex: 1;
+  border: 2px solid white;
+  padding-bottom: 20px;
+}
+.weatherComponent .week-container .weekday-information .weekly-temp-value {
+  font-weight: bold;
 }
 /*# sourceMappingURL=App.css.map */
