@@ -15,3 +15,5 @@ back-up run command:
 Notes:
 
 Weather may not exactly match google/weather network. The temperature is a average of the 24H and the weather condition is for that day at 12:00 noon
+
+Tested on Google Chrome browser
