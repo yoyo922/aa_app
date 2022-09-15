@@ -130,7 +130,7 @@ class App extends React.Component<{}, myState> {
       if (
         index === weatherData.length - 1 &&
         fiveDaysWeather.length < daysToCheck &&
-        weatherData[0].dt_txt.split(" ")[0] !== dayString
+        element.dt_txt.split(" ")[0] !== dayString
       ) {
         fiveDaysWeather.push({
           day: element.dt,
