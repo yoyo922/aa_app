@@ -10,7 +10,7 @@ interface myState {
 }
 
 const cities = ["Ottawa", "Moscow", "Tokyo"];
-//API key for openewather API
+//API key for openeweather API
 const api_key = "ceaabd1441aec5eb12417e86fc7f7b4f";
 
 interface latLng {
