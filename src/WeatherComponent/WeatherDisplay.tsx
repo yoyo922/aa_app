@@ -31,7 +31,7 @@ class WeatherDisplay extends React.Component<myProps, {}> {
         </div>
         <div className="week-container">
           {weatherData.map((data: any) => (
-            <div className="weekday-information">
+            <div key={data.day} className="weekday-information">
               <h3>{days[new Date(data.day * 1000).getDay()]}</h3>
               <img src={`http://openweathermap.org/img/w/${data.icon}.png`} alt="icon not available"></img>
               <p className="weekly-temp-value">{data.temp}°</p>
