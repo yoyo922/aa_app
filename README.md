@@ -10,3 +10,8 @@ how to run in develop, replace this npm run start script with this back-up run c
 
 back-up run command: 
 "start": "concurrently --kill-others \"less-watch-compiler --config less-watcher.config.json\" \"react-scripts start\"",
+
+---------------------
+Notes:
+
+Weather may not exactly match google/weather network. The temperature is a average of the 24H and the weather condition is for that day at 12:00 noon
