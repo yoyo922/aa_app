@@ -107,12 +107,12 @@ class App extends React.Component<{}, myState> {
     let weatherIcon: string = weatherData[0].weather[0].icon;
     let timeString: string = weatherData[0].dt_txt.split(" ")[1]
     let dayString: string = weatherData[0].dt_txt.split(" ")[0]
-
+    let dayStamp: string = weatherData[0].dt;
+    
     weatherData.forEach((element, index) => {
-      if(dayString !== element.dt_txt.split(" ")[0] || index === weatherData.length) {
-        console.log(element)
+      if(dayString !== element.dt_txt.split(" ")[0] || index === weatherData.length - 1) {
         fiveDaysWeather.push({
-          day: element.dt,
+          day: dayStamp,
           temp: Math.round(weatherTemp / weatherTempCount),
           weather: weatherType,
           icon: weatherIcon
@@ -126,20 +126,18 @@ class App extends React.Component<{}, myState> {
 
       dayString = element.dt_txt.split(" ")[0];
       timeString = element.dt_txt.split(" ")[1];
+      dayStamp = element.dt;
 
       if(timeString === '12:00:00') {
         weatherType = element.weather[0].main;
         weatherIcon = element.weather[0].icon;
-        console.log(weatherType);
       }
 
       weatherTemp = weatherTemp + element.main.temp;
       weatherTempCount = weatherTempCount + 1;
 
     });
-
     fiveDaysWeather.pop();
-    
     return fiveDaysWeather;
   };
 
@@ -154,7 +152,6 @@ class App extends React.Component<{}, myState> {
         city: e.target.name,
       },
       () => {
-        console.log("city", this.state.city);
         this.getApiData(this.state.city);
       }
     );
