@@ -20,7 +20,7 @@ class WeatherDisplay extends React.Component<myProps, {}> {
     return (
       <div className="weatherComponent">
         <div className="today-container">
-          <h3>Today {days[new Date(weatherData[0].day * 1000).getDay()]}</h3>
+          <h3>Today</h3>
           <div className="today-information">
             <img
               src={`http://openweathermap.org/img/w/${weatherData[0].icon}.png`}
