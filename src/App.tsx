@@ -6,13 +6,12 @@ import WeatherDisplay from "./WeatherComponent/WeatherDisplay";
 interface myState {
   city: string;
   weatherData: any;
-  todayWeather: any;
 }
 
 const cities = ["Ottawa", "Moscow", "Tokyo"];
 //API key for openeweather API
 const api_key = "ceaabd1441aec5eb12417e86fc7f7b4f";
-const daysToCheck = 4;
+const daysToCheck = 5;
 
 interface latLng {
   lat: string;
@@ -46,7 +45,6 @@ class App extends React.Component<{}, myState> {
     this.state = {
       city: "Ottawa",
       weatherData: null,
-      todayWeather: null,
     };
   }
 
@@ -61,35 +59,19 @@ class App extends React.Component<{}, myState> {
    * and one for weather data for today, will store information in component state
    * @param city - string of the city to get weather information for
    */
-  getApiData = (city: String) => {
-    axios
-      .get(
-        `https://api.openweathermap.org/data/2.5/forecast?lat=${
-          cityLocations[city as keyof locations].lat
-        }&lon=${
-          cityLocations[city as keyof locations].lng
-        }&units=metric&appid=${api_key}`
-      )
-      .then((res) => {
-        let fiveDaysWeather = this.getFourDaysWeather(res.data.list);
-        this.setState({
-          weatherData: fiveDaysWeather,
-        });
-      });
+  getApiData = async (city: String) => {
+    let forecastRes = await axios.get(
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${
+        cityLocations[city as keyof locations].lat
+      }&lon=${
+        cityLocations[city as keyof locations].lng
+      }&units=metric&appid=${api_key}`
+    );
 
-    axios
-      .get(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${
-          cityLocations[city as keyof locations].lat
-        }&lon=${
-          cityLocations[city as keyof locations].lng
-        }&units=metric&appid=${api_key}`
-      )
-      .then((res) => {
-        this.setState({
-          todayWeather: res,
-        });
-      });
+    let fiveDaysWeather = this.getFourDaysWeather(forecastRes.data.list);
+    this.setState({
+      weatherData: fiveDaysWeather,
+    });
   };
 
   /**
@@ -100,6 +82,7 @@ class App extends React.Component<{}, myState> {
    * @returns - the needed information
    */
   getFourDaysWeather = (weatherData: Array<any>): Array<any> => {
+
     let fiveDaysWeather: any = [];
     let weatherTemp: number = 0;
     let weatherTempCount = 0;
@@ -110,10 +93,12 @@ class App extends React.Component<{}, myState> {
     let dayStamp: string = weatherData[0].dt;
 
     weatherData.forEach((element, index) => {
+
       if (
         dayString !== element.dt_txt.split(" ")[0] &&
         fiveDaysWeather.length < daysToCheck
       ) {
+        
         fiveDaysWeather.push({
           day: dayStamp,
           temp: Math.round(weatherTemp / weatherTempCount),
@@ -172,7 +157,7 @@ class App extends React.Component<{}, myState> {
   };
 
   render() {
-    const { city, weatherData, todayWeather } = this.state;
+    const { city, weatherData } = this.state;
 
     return (
       <div className="App">
@@ -191,7 +176,6 @@ class App extends React.Component<{}, myState> {
         <WeatherDisplay
           city={city}
           fourDaysData={weatherData}
-          todayData={todayWeather}
         ></WeatherDisplay>
       </div>
     );
